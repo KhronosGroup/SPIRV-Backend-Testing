@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
+    'fetcher.apps.FetcherConfig',
+    'dispatcher.apps.DispatcherConfig',
+    'viewer.apps.ViewerConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
