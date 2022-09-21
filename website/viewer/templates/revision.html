@@ -1,0 +1,80 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h2>Revision</h2>
+
+<!-- Revision metadata table -->
+<h3>Metadata</h3>
+<div class="row mb-4">
+    <div class=col>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Title</th>
+                    <td>{{ revision.title|truncatechars:65 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Hash</th>
+                    <td>{{ revision.hash }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Branch</th>
+                    <td>{{ revision.branch }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Staging</th>
+                    <td>{{ revision.staging }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Committed</th>
+                    <td>{{ revision.date|date:'SHORT_DATE_FORMAT' }} {{ revision.date|time:'H:i' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Skip</th>
+                    <td>{{ revision.skip }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Revision jobs -->
+{% if jobs %}<h3>Jobs</h3>{% endif %}
+<div class="row">
+    <ul class="list-group mb-3">
+        {% for job in jobs %}
+        <li class="list-group-item lh-sm">
+            <div class="row">
+                <div class="col-8">
+                    <h6 class="mb-0"><a href="{% url 'job' job.pk %}" class="link-dark">Job {{ job.pk }} for {{ job.revision.title|truncatechars:65 }}</a> &nbsp;
+                        {% if job.primary_job %}
+                        <span class="badge text-bg-dark">PRIMARY</span>
+                        {% endif %}
+
+                        {% if job.status == 'S' %}
+                        <span class="badge text-bg-secondary">SKIPPED</span>
+                        {% elif job.status == 'Q' %}
+                        <span class="badge text-bg-warning">QUEUED</span>
+                        {% elif job.status == 'D' %}
+                        <span class="badge text-bg-warning">DISPATCHED</span>
+                        {% elif job.status == 'T' %}
+                        <span class="badge text-bg-primary">TESTING</span>
+                        {% elif job.status == 'C' %}
+                        <span class="badge text-bg-success">COMPLETED</span>
+                        {% elif job.status == 'F' %}
+                        <span class="badge text-bg-danger">BUILD FAILED</span>
+                        {% endif %}
+                    </h6>
+                    <small class="text-muted">
+                        Creation date: {{ job.date_added|date:'SHORT_DATE_FORMAT' }}
+                        {% if job.status == 'D' or job.status == 'T' %}
+                        Dispatch date: {{ job.dispatch_date|date:'SHORT_DATE_FORMAT' }} {{ job.dispatch_date|time:'H:i' }}
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="col-4 text-end"><a href="{% url 'job' job.pk %}" class="btn btn-outline-dark">Results</a></div>
+            </div>
+        </li>         
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
