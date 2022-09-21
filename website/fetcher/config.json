@@ -1,0 +1,6 @@
+{
+    "TESTED_REPOSITORY_PATH": "~/Workspace/llvm-project-staging/",
+    "TESTED_REPOSITORY_MAIN_BRANCH_NAME": "origin/main",
+    "TESTED_REPOSITORY_STAGING_BRANCH_PREFIX": "origin/phab-diff-",
+    "FETCH_CUTOFF_COMMIT_HASH": "7fd4622d4801cc14823ecde678d55b6f3a106eb9"
+}
