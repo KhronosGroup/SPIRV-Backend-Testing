@@ -1,0 +1,231 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h2>Testing results for job {{ job.pk }}</h2>
+
+<!-- Revision metadata table -->
+<h3>Metadata</h3>
+<div class="row mb-4">
+    <div class="col-lg-12">
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Job identifier</th>
+                    <td>{{ job.pk }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Creation date</th>
+                    <td>{{ job.date_added|date:'SHORT_DATE_FORMAT' }} {{ job.date_added|time:'H:i' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Primary</th>
+                    <td>{{ job.primary_job }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                        {% if job.status == 'S' %}
+                        Skipped
+                        {% elif job.status == 'Q' %}
+                        Queued
+                        {% elif job.status == 'D' %}
+                        Dispatched
+                        {% elif job.status == 'T' %}
+                        Testing
+                        {% elif job.status == 'C' %}
+                        Completed
+                        {% elif job.status == 'F' %}
+                        Build failed
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit title</th>
+                    <td>{{ job.revision.title|truncatechars:65 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit hash</th>
+                    <td>{{ job.revision.hash }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit branch</th>
+                    <td>{{ job.revision.branch }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Committed</th>
+                    <td>{{ job.revision.date|date:'SHORT_DATE_FORMAT' }} {{ revision.date|time:'H:i' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- LIT test results -->
+{% if lit_results %}
+<h3>LIT test results</h3>
+<div class="row">
+    <!-- Statistics -->
+    <div class="col-lg-6">
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Total tests</th>
+                    <td>{{ lit_results_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Passing tests</th>
+                    <td>{{ lit_results_passing }} ({% widthratio lit_results_passing lit_results_total 100 %}%)</td>
+                </tr>
+                <tr>
+                    <th scope="row">Failing tests</th>
+                    <td>{{ lit_results_failing }} ({% widthratio lit_results_failing lit_results_total 100 %}%)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <!-- Chart -->
+        <canvas id="litTestsChart" width="5" height="1"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
+        <script>
+            var ctx = document.getElementById('litTestsChart');
+            var myChart = new Chart()
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Passed', 'Failing'],
+                    datasets: [{
+                        label: '# of tests',
+                        data: [{{ lit_results_passing }}, {{ lit_results_failing }}],
+                        maxBarThickness: 60,
+                        backgroundColor: [
+                            'rgba(64, 132, 88, 0.6)',
+                            'rgba(203, 68, 74, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(64, 132, 88, 1)',
+                            'rgba(203, 68, 74, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y'
+                }
+            });
+        </script>
+    </div>
+</div>
+
+<!-- List of all LIT test results -->
+<h5>All results</h5>
+<div class="row mb-3">
+    <div class="col">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 60%">Test path</th>
+                    <th scope="col" style="width: 20%">Date run</th>
+                    <th scope="col" style="width: 20%">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in lit_results %}
+                <tr>
+                    <td>{{ result.test_path }}</td>
+                    <td>{{ result.date_added|date:'SHORT_DATE_FORMAT' }}</td>
+                    <td>{% if result.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- CTS test results -->
+{% if cts_results %}
+<h4>OpenCL conformance test results</h4>
+<div class="row">
+    <!-- Statistics -->
+    <div class="col-lg-6">
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Total tests</th>
+                    <td>{{ cts_results_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Passing tests</th>
+                    <td>{{ cts_results_passing }} ({% widthratio cts_results_passing cts_results_total 100 %}%)</td>
+                </tr>
+                <tr>
+                    <th scope="row">Failing tests</th>
+                    <td>{{ cts_results_failing }} ({% widthratio cts_results_failing cts_results_total 100 %}%)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <!-- Chart -->
+        <canvas id="ctsTestsChart" width="5" height="1"></canvas>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1"></script>
+        <script>
+            var ctx = document.getElementById('ctsTestsChart');
+            var myChart = new Chart()
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Passed', 'Failed'],
+                    datasets: [{
+                        label: '# of tests',
+                        data: [{{ cts_results_passing }}, {{ cts_results_failing }}],
+                        maxBarThickness: 60,
+                        backgroundColor: [
+                            'rgba(64, 132, 88, 0.6)',
+                            'rgba(203, 68, 74, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(64, 132, 88, 1)',
+                            'rgba(203, 68, 74, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y'
+                }
+            });
+        </script>
+    </div>
+</div>
+
+<!-- List of all CTS test results -->
+<h5>All results</h5>
+<div class="row">
+    <div class="col">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 20%">Test name</th>
+                    <th scope="col" style="width: 20%">Category</th>
+                    <th scope="col" style="width: 20%">Date run</th>
+                    <th scope="col" style="width: 20%">Duration</th>
+                    <th scope="col" style="width: 20%">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in cts_results %}
+                <tr>
+                    <td><a href="{% url 'cts_result' result.pk %}">{{ result.test_name }}</a></td>
+                    <td>{{ result.test_category }}</td>
+                    <td>{{ result.date_added|date:'SHORT_DATE_FORMAT' }}</td>
+                    <td>{% if result.timedout %}<span class="badge text-bg-danger">TIMED OUT</span>{% else %}{{ result.end_time|timeuntil:result.start_time }}{% endif %}</td>
+                    <td>{% if result.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

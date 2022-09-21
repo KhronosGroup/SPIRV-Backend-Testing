@@ -1,0 +1,77 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2>Monorepo commits</h2>
+<div class="row">
+    <p class="text-justify">
+        Each of the revisions below corresponds to a single commit pushed to 
+        <a href="https://github.com/llvm/llvm-project/tree/main" class="link-secondary">the LLVM's monorepo main branch</a>. 
+        Only commits with changes relevant to the SPIR-V backend are tested.
+    </p>
+</div>
+
+{% if last_tested_revision and page_object.number == 1 %}
+<div class="row">
+    <h3>Latest tested revision</h3>
+    <ul class="list-group mb-3">
+        <li class="list-group-item lh-sm">
+            <div class="row">
+                <div class="col-8">
+                    <h6 class="mb-0"><a href="{% url 'revision' last_tested_revision.hash %}" class="link-dark">{{ last_tested_revision.title|truncatechars:65 }}</a> &nbsp;
+                        <span class="badge text-bg-success">COMPLETED</span>
+                    </h6>
+                    </h6>
+                    <small class="text-muted">{{ last_tested_revision.hash }} {{ last_tested_revision.date|date:'SHORT_DATE_FORMAT' }} {{ last_tested_revision.date|time:'H:i' }}</small>
+                </div>
+                <div class="col-4 text-end"><a href="{% url 'revision' last_tested_revision.hash %}" class="btn btn-outline-dark">Jobs</a></div>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endif %}
+
+<div class="row">
+    <h3>All revisions</h3>
+    <ul class="list-group mb-3">
+        {% for pair in revision_status_pairs %}
+        <li class="list-group-item lh-sm">
+            <div class="row">
+                <div class="col-8">
+                    <h6 class="mb-0"><a href="{% url 'revision' pair.0.hash %}" class="link-dark">{{ pair.0.title|truncatechars:65 }}</a> &nbsp; 
+                        {% if not pair.1 or pair.1 == 'S' %}
+                        <span class="badge text-bg-secondary">SKIPPED</span>
+                        {% elif pair.1 == 'Q' %}
+                        <span class="badge text-bg-warning">QUEUED</span>
+                        {% elif pair.1 == 'D' %}
+                        <span class="badge text-bg-warning">QUEUED</span>
+                        {% elif pair.1 == 'T' %}
+                        <span class="badge text-bg-primary">TESTING</span>
+                        {% elif pair.1 == 'C' %}
+                        <span class="badge text-bg-success">COMPLETED</span>
+                        {% elif pair.1 == 'F' %}
+                        <span class="badge text-bg-danger">BUILD FAILED</span>
+                        {% endif %}
+                    </h6>
+                    <small class="text-muted">{{ pair.0.hash }} {{ pair.0.date|date:'SHORT_DATE_FORMAT' }} {{ pair.0.date|time:'H:i' }}</small>
+                </div>
+                <div class="col-4 text-end"><a href="{% url 'revision' pair.0.hash %}" class="btn btn-outline-dark">Jobs</a></div>
+            </div>
+        </li>         
+        {% endfor %}
+    </ul>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if not page_object.has_previous %} disabled {% endif %}">
+                <a class="page-link" {% if page_object.has_previous %} href="?page={{ page_object.previous_page_number }}" {% endif %}>Previous</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">{{ page_object.number }} of {{ page_object.paginator.num_pages }}</span>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_object.next_page_number }}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock %}

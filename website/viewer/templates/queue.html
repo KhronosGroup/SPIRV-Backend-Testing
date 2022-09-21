@@ -1,0 +1,45 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2>Testing queue</h2>
+<div class="row">
+    <p class="text-justify">
+        The list shows current jobs in the testing order.
+    </p>
+</div>
+
+<div class="row">
+    <ul class="list-group mb-3">
+        {% for job in jobs %}
+        <li class="list-group-item lh-sm">
+            <div class="row">
+                <div class="col-8">
+                    <h6 class="mb-0"><a href="{% url 'job' job.pk %}" class="link-dark">Job {{ job.pk }} for {{ job.revision.title|truncatechars:65 }}</a> &nbsp; 
+                        {% if job.status == 'S' %}
+                        <span class="badge text-bg-secondary">SKIPPED</span>
+                        {% elif job.status == 'Q' %}
+                        <span class="badge text-bg-warning">QUEUED</span>
+                        {% elif job.status == 'D' %}
+                        <span class="badge text-bg-warning">DISPATCHED</span>
+                        {% elif job.status == 'T' %}
+                        <span class="badge text-bg-primary">TESTING</span>
+                        {% elif job.status == 'C' %}
+                        <span class="badge text-bg-success">COMPLETED</span>
+                        {% elif job.status == 'F' %}
+                        <span class="badge text-bg-danger">BUILD FAILED</span>
+                        {% endif %}
+                    </h6>
+                    <small class="text-muted">
+                        Creation date: {{ job.date_added|date:'SHORT_DATE_FORMAT' }}
+                        {% if job.status == 'D' or job.status == 'T' %}
+                        Dispatch date: {{ job.dispatch_date|date:'SHORT_DATE_FORMAT' }} {{ job.dispatch_date|time:'H:i' }}
+                        {% endif %}
+                    </small>
+                </div>
+                <div class="col-4 text-end"><a href="{% url 'job' job.pk %}" class="btn btn-outline-dark">Results</a></div>
+            </div>
+        </li>         
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

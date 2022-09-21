@@ -1,0 +1,42 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<h2>Phabricator diffs</h2>
+<div class="row">
+    <p class="text-justify">
+        Each of the revisions below corresponds to a diff uploaded to  <a href="https://reviews.llvm.org" class="link-secondary">LLVM's Phabricator</a>. 
+        Please note that only diffs with <i>[SPIR-V]</i> or <i>[SPIRV]</i> tag in the title are tested.
+    </p>
+</div>
+
+<div class="row">
+    {% for pair in revision_status_pairs %}
+    <h3>{{ pair.0.branch }}</h3>
+    <ul class="list-group mb-3">
+        <li class="list-group-item lh-sm">
+            <div class="row">
+                <div class="col-8">
+                    <h6 class="mb-0"><a href="{% url 'revision' pair.0.hash %}" class="link-dark">{{ pair.0.title|truncatechars:65 }}</a> &nbsp; 
+                        {% if not pair.1 or pair.1 == 'S' %}
+                        <span class="badge text-bg-secondary">SKIPPED</span>
+                        {% elif pair.1 == 'Q' %}
+                        <span class="badge text-bg-warning">QUEUED</span>
+                        {% elif pair.1 == 'D' %}
+                        <span class="badge text-bg-warning">QUEUED</span>
+                        {% elif pair.1 == 'T' %}
+                        <span class="badge text-bg-primary">TESTING</span>
+                        {% elif pair.1 == 'C' %}
+                        <span class="badge text-bg-success">COMPLETED</span>
+                        {% elif pair.1 == 'F' %}
+                        <span class="badge text-bg-danger">BUILD FAILED</span>
+                        {% endif %}
+                    </h6>
+                    <small class="text-muted">{{ pair.0.hash }} {{ pair.0.date|date:'SHORT_DATE_FORMAT' }} {{ pair.0.date|time:'H:i' }}</small>
+                </div>
+                <div class="col-4 text-end"><a href="{% url 'revision' pair.0.hash %}" class="btn btn-outline-dark">Jobs</a></div>
+            </div>
+        </li>         
+    </ul>
+    {% endfor %}
+</div>
+{% endblock %}

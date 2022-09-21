@@ -1,0 +1,90 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+<h2>{{ result.test_category }} / {{ result.test_name }} {% if result.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}</h2>
+
+<!-- Test and run metadata tables -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <h3>Test metadata</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>{{ result.test_name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Category</th>
+                    <td>{{ result.test_category }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Suite</th>
+                    <td>Khronos OpenCL CTS</td>
+                </tr>
+                <tr>
+                    <th scope="row">Suite version</th>
+                    <td>{{ result.suite_version }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Executable path</th>
+                    <td>{{ result.test_executable }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Arguments</th>
+                    <td>{{ result.test_arguments }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <h3>Run metadata</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Parent job</th>
+                    <td><a href="{% url 'job' result.parent_job.pk %}">Job {{ result.parent_job.pk }}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Revision</th>
+                    <td><a href="{% url 'revision' result.parent_job.revision.hash %}">{{ result.parent_job.revision.hash|truncatechars:16 }} / {{ result.parent_job.revision.title|truncatechars:65 }}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Driver version</th>
+                    <td>NEO {{ result.neo_version }}; IGC {{ result.igc_version }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Date run</th>
+                    <td>{{ result.date_added|date:'SHORT_DATE_FORMAT' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Duration</th>
+                    <td>{% if result.timedout %}<span class="badge text-bg-danger">TIMED OUT</span>{% else %}{{ result.end_time|timeuntil:result.start_time }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>{% if result.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Runner standard output and error -->
+<h3>Runner output</h3>
+<div class="row mb-3">
+    <div class="col">
+        <p>Stdout from the runner of the corresponding OpenCL CTS test:</p>
+        <div class="bg-light border rounded p-1">
+            <p style="font-family: 'Courier New', monospace;">{{ result.standard_output|linebreaksbr }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col">
+        <p>Stderr from the runner of the corresponding OpenCL CTS test:</p>
+        <div class="bg-light border rounded p-1">
+            <p style="font-family: 'Courier New', monospace;">{{ result.standard_error|linebreaksbr }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
