@@ -1,15 +1,16 @@
 from fetcher.models import Revision
 from .models import Job
 
+
 def create_jobs():
     """
     Creates primary jobs (running all tests from all test suites) for newly
     fetched revisions.
     """
-    print('Creating jobs...')
+    print("Creating jobs...")
 
     # Get all revisions which should not be skipped (having relevant changes).
-    revisions = Revision.objects.filter(skip=False).order_by('date')
+    revisions = Revision.objects.filter(skip=False).order_by("date")
 
     for revision in revisions:
         # Do not create a new job for revisions which already have a primary
@@ -17,9 +18,8 @@ def create_jobs():
         if Job.objects.filter(revision=revision, primary_job=True).exists():
             continue
 
-        job = Job(revision=revision, primary_job=True,
-                  status=Job.Status.QUEUED)
+        job = Job(revision=revision, primary_job=True, status=Job.Status.QUEUED)
         print(job)
         job.save()
 
-    print('Finished creating jobs!')
+    print("Finished creating jobs!")

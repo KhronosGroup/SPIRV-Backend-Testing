@@ -12,8 +12,7 @@ class Revision(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return 'Revision ' + self.hash[:16] + ' / ' + self.title[:80]
+        return "Revision " + self.hash[:16] + " / " + self.title[:80]
 
     class Meta:
-        ordering = ['-date']
-        
+        ordering = ["-date"]

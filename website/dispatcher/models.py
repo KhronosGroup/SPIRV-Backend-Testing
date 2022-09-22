@@ -50,25 +50,29 @@ class Job(models.Model):
     run_cts_samplerlessReads = models.BooleanField(default=True)
 
     class Status(models.TextChoices):
-        SKIPPED = 'S', _('Skipped')
-        QUEUED = 'Q', _('Queued')
-        DISPATCHED = 'D', _('Dispatched')
-        TESTING = 'T', _('Testing')
-        COMPLETED = 'C', _('Completed')
-        BUILD_FAILED = 'F', _('Build failed')
+        SKIPPED = "S", _("Skipped")
+        QUEUED = "Q", _("Queued")
+        DISPATCHED = "D", _("Dispatched")
+        TESTING = "T", _("Testing")
+        COMPLETED = "C", _("Completed")
+        BUILD_FAILED = "F", _("Build failed")
 
-    status = models.CharField(max_length=1, choices=Status.choices, 
-                              default=Status.QUEUED)
+    status = models.CharField(
+        max_length=1, choices=Status.choices, default=Status.QUEUED
+    )
     status_details = models.TextField(blank=True)
     dispatch_date = models.DateTimeField(blank=True, null=True)
     dispatch_runner = models.CharField(max_length=8, blank=True)
 
     def __str__(self):
-        return 'Job ' + str(self.pk) + ' (' + self.status + ')' + ' for ' + \
-               self.revision.hash[:16] + ' / ' + self.revision.title[:80]
+        return (
+            "Job " + str(self.pk)
+            + " (" + self.status + ")"
+            + " for " + self.revision.hash[:16] + " / " + self.revision.title[:80]
+        )
 
     class Meta:
-        ordering = ['-date_added']
+        ordering = ["-date_added"]
 
 
 # Model representing a LIT test result
@@ -79,12 +83,14 @@ class LitResult(models.Model):
     passing = models.BooleanField(default=False)
 
     def __str__(self):
-        return 'LIT "' + self.test_path + '" (' + \
-               ('PASS' if self.passing else 'FAIL') + ') ' + ' for job ' + \
-               str(self.parent_job.pk)
+        return (
+            'LIT "' + self.test_path
+            + '" (' + ("PASS" if self.passing else "FAIL") + ") "
+            + " for job " + str(self.parent_job.pk)
+        )
 
     class Meta:
-        ordering = ['-date_added']
+        ordering = ["-date_added"]
 
 
 # Model representing a CTS test result
@@ -104,12 +110,14 @@ class CtsResult(models.Model):
     suite_version = models.CharField(max_length=15, blank=True)
     igc_version = models.CharField(max_length=15, blank=True)
     neo_version = models.CharField(max_length=15, blank=True)
-    dump = models.FileField(upload_to='dumps/', blank=True)
+    dump = models.FileField(upload_to="dumps/", blank=True)
 
     def __str__(self):
-        return 'CTS ' + self.test_category + '/' + self.test_name + ' (' + \
-               ('PASS' if self.passing else 'FAIL') + ') ' + ' for job ' + \
-               str(self.parent_job.pk)
+        return (
+            "CTS " + self.test_category + "/" + self.test_name
+            + " (" + ("PASS" if self.passing else "FAIL") + ") "
+            + " for job " + str(self.parent_job.pk)
+        )
 
     class Meta:
-        ordering = ['-date_added']
+        ordering = ["-date_added"]
