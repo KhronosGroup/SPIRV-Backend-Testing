@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Django",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/website/manage.py",
+            "args": [
+                "runserver"
+            ],
+            // Set a temporary secret key below to run the development server.
+            "env": {"SECRET_KEY": ""},
+            "django": true,
+            "justMyCode": true
+        }
+    ]
+}
