@@ -1,4 +1,5 @@
 {% extends 'base_generic.html' %}
+
 {% block content %}
 <h2>{{ result.test_category }} / {{ result.test_name }} {% if result.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}</h2>
 
