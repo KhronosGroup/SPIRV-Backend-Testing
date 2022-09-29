@@ -62,7 +62,7 @@ class Job(models.Model):
     )
     status_details = models.TextField(blank=True)
     dispatch_date = models.DateTimeField(blank=True, null=True)
-    dispatch_runner = models.CharField(max_length=8, blank=True)
+    dispatch_runner = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
         return (
