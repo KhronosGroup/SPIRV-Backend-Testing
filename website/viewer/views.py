@@ -120,7 +120,7 @@ def revision(request, hash):
 
 def job(request, pk):
     template = loader.get_template("job.html")
-    
+
     try:
         job = Job.objects.get(pk=pk)
     except Job.DoesNotExist:
@@ -156,11 +156,17 @@ def job(request, pk):
 
 def cts_result(request, pk):
     template = loader.get_template("cts_result.html")
-    
+
     try:
         result = CtsResult.objects.get(pk=pk)
     except CtsResult.DoesNotExist:
         raise Http404("Result does not exist!")
 
-    context = {"page_title": str(result), "result": result}
+    context = {
+        "page_title": str(result),
+        "result": result,
+        "test_executable": result.test_executable[
+            result.test_executable.find("/test_conformance") :
+        ],
+    }
     return HttpResponse(template.render(context, request))
