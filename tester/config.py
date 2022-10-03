@@ -13,7 +13,7 @@ CTS_FILE_PATH = os.path.join(
 )
 
 
-def _read_config_value(key):
+def _read_config_value(key: str) -> str:
     with open(CONFIG_FILE_PATH) as config_file:
         config_dict = json.load(config_file)
         if not key in config_dict:
@@ -22,7 +22,7 @@ def _read_config_value(key):
         return config_dict[key]
 
 
-def get_cts_build_path():
+def get_cts_build_path() -> str:
     """
     Get the absolute path to the OpenCL CTS build directory.
     """
@@ -33,7 +33,7 @@ def get_cts_build_path():
     return path
 
 
-def get_cts_test_list():
+def get_cts_test_list() -> str:
     """
     Get list of all OpenCL CTS tests.
     """
@@ -42,7 +42,7 @@ def get_cts_test_list():
         return cts_test_list
 
 
-def get_cts_test_executable_relative_path(test_category, test_name):
+def get_cts_test_executable_relative_path(test_category: str, test_name: str) -> str:
     """
     Get the executable relative path for the given OpenCL CTS test.
     """
@@ -54,7 +54,7 @@ def get_cts_test_executable_relative_path(test_category, test_name):
     raise KeyError(f"Test {test_category}/{test_name} definition was not found")
 
 
-def get_cts_test_executable_absolute_path(test_category, test_name):
+def get_cts_test_executable_absolute_path(test_category: str, test_name: str) -> str:
     """
     Get the executable absolute path for the given OpenCL CTS test.
     """
@@ -64,7 +64,7 @@ def get_cts_test_executable_absolute_path(test_category, test_name):
     return test_absolute_path
 
 
-def get_cts_test_arguments(test_category, test_name):
+def get_cts_test_arguments(test_category: str, test_name: str) -> str:
     """
     Get CLI arguments required to run the given OpenCL CTS test.
     """
@@ -76,7 +76,7 @@ def get_cts_test_arguments(test_category, test_name):
     raise KeyError(f"Test {test_category}/{test_name} definition was not found")
 
 
-def get_tested_repository_build_path():
+def get_tested_repository_build_path() -> str:
     """
     Get the absolute path to the tested repository build directory.
     """
@@ -87,7 +87,7 @@ def get_tested_repository_build_path():
     return path
 
 
-def get_backend_wrapper_build_path():
+def get_backend_wrapper_build_path() -> str:
     """
     Get the absolute path to the backend wrapper build directory.
     """
@@ -98,7 +98,7 @@ def get_backend_wrapper_build_path():
     return path
 
 
-def get_api_endpoint():
+def get_api_endpoint() -> str:
     """
     Get the address of the API endpoint.
     """
@@ -109,21 +109,21 @@ def get_api_endpoint():
     return endpoint
 
 
-def get_igc_version():
+def get_igc_version() -> str:
     """
     Get the version of the Intel Graphics Compiler.
     """
     return _read_config_value("IGC_VERSION")
 
 
-def get_neo_version():
+def get_neo_version() -> str:
     """
     Get the version of the Intel Graphics Compute Runtime.
     """
     return _read_config_value("NEO_VERSION")
 
 
-def get_cts_version():
+def get_cts_version() -> str:
     """
     Get the version of the OpenCL CTS test suite.
     """
