@@ -96,3 +96,14 @@ def get_backend_wrapper_build_path():
         raise OSError("Invalid backend wrapper build directory path")
 
     return path
+
+
+def get_api_endpoint():
+    """
+    Get the address of the API endpoint.
+    """
+    endpoint = _read_config_value("API_ENDPOINT")
+    if not endpoint:
+        raise ValueError("API endpoint not defined")
+
+    return endpoint

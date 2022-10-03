@@ -1,5 +1,6 @@
 {
     "CTS_BUILD_PATH": "~/Workspace/cts/build/",
     "TESTED_REPOSITORY_BUILD_PATH": "~/Workspace/llvm-project-staging/build/",
-    "BACKEND_WRAPPER_BUILD_PATH": "~/Workspace/LLVM-Backend-Wrapper/build/"
+    "BACKEND_WRAPPER_BUILD_PATH": "~/Workspace/LLVM-Backend-Wrapper/build/",
+    "API_ENDPOINT": "http://127.0.0.1:8000/api/"
 }
