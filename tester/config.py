@@ -107,3 +107,24 @@ def get_api_endpoint():
         raise ValueError("API endpoint not defined")
 
     return endpoint
+
+
+def get_igc_version():
+    """
+    Get the version of the Intel Graphics Compiler.
+    """
+    return _read_config_value("IGC_VERSION")
+
+
+def get_neo_version():
+    """
+    Get the version of the Intel Graphics Compute Runtime.
+    """
+    return _read_config_value("NEO_VERSION")
+
+
+def get_cts_version():
+    """
+    Get the version of the OpenCL CTS test suite.
+    """
+    return _read_config_value("CTS_VERSION")

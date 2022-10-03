@@ -2,5 +2,8 @@
     "CTS_BUILD_PATH": "~/Workspace/cts/build/",
     "TESTED_REPOSITORY_BUILD_PATH": "~/Workspace/llvm-project-staging/build/",
     "BACKEND_WRAPPER_BUILD_PATH": "~/Workspace/LLVM-Backend-Wrapper/build/",
-    "API_ENDPOINT": "http://127.0.0.1:8000/api/"
+    "API_ENDPOINT": "http://127.0.0.1:8000/api/",
+    "IGC_VERSION": "1.0.11702.1",
+    "NEO_VERSION": "22.34.24023",
+    "CTS_VERSION": "80a4a833"
 }
