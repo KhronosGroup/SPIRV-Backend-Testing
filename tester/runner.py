@@ -239,6 +239,8 @@ def run_queued_job() -> None:
     """
     Get a queued job from the API, checkout the given revision, build the backend,
     build the wrapper, run the tests, and post the results.
+
+    Returns False in case no testing job was available or current job was cancelled.
     """
     # Get a single queued job from the API. The status of this job is autmatically
     # changed from "Queued" to "Dispatched".
@@ -246,7 +248,7 @@ def run_queued_job() -> None:
 
     if not pk:
         # No job for testing
-        return
+        return False
 
     print(f"Testing job {pk} for revision {revision_hash}")
 
@@ -258,7 +260,7 @@ def run_queued_job() -> None:
     if not success:
         print("Checking out the git commit failed")
         update_job_status(pk, JobStatus.BUILD_FAILED)
-        return
+        return True
 
     # Build the LLVM project.
     print("Building the LLVM project...")
@@ -266,7 +268,7 @@ def run_queued_job() -> None:
     if not success:
         print("Building the LLVM project failed")
         update_job_status(pk, JobStatus.BUILD_FAILED)
-        return
+        return True
 
     # Build the backend wrapper.
     print("Building the backend wrapper...")
@@ -274,12 +276,12 @@ def run_queued_job() -> None:
     if not success:
         print("Building the backend wrapper failed")
         update_job_status(pk, JobStatus.BUILD_FAILED)
-        return
+        return True
 
     # Make sure the job was not cancelled before running the test.
     if get_job_status(pk) != JobStatus.TESTING:
         print("Testing job was cancelled")
-        return
+        return True
 
     # If scheduled in this job, run all SPIR-V LIT tests and post the results.
     print("Running LIT tests...")
@@ -300,7 +302,7 @@ def run_queued_job() -> None:
         # Make sure the job was not cancelled before running the test.
         if get_job_status(pk) != JobStatus.TESTING:
             print("Testing job was cancelled")
-            return
+            return False
 
         result = _run_cts_test(test["test_category"], test["test_name"])
         result.print()
@@ -308,4 +310,4 @@ def run_queued_job() -> None:
 
     print(f"Finished testing job {pk} for {revision_hash}")
     update_job_status(pk, JobStatus.COMPLETED)
-    return
+    return True
