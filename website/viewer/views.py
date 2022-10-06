@@ -5,18 +5,21 @@ from django.db.models import Q
 from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils import timezone
+from django.views.decorators.clickjacking import xframe_options_deny
 
-from dispatcher.models import *
-from fetcher.models import *
 from fetcher.config import get_tested_repository_main_branch_name
+from fetcher.models import *
+from dispatcher.models import *
 
 
+@xframe_options_deny
 def index(request):
     template = loader.get_template("index.html")
     context = {"page_title": "Home"}
     return HttpResponse(template.render(context, request))
 
 
+@xframe_options_deny
 def dashboard(request):
     template = loader.get_template("dashboard.html")
     context = {"page_title": "Dashboard"}
@@ -37,6 +40,7 @@ def _get_status_for_revision(revision):
     return jobs[0].status
 
 
+@xframe_options_deny
 def commited(request):
     template = loader.get_template("commited.html")
 
@@ -69,6 +73,7 @@ def commited(request):
     return HttpResponse(template.render(context, request))
 
 
+@xframe_options_deny
 def staging(request):
     template = loader.get_template("staging.html")
 
@@ -85,6 +90,7 @@ def staging(request):
     return HttpResponse(template.render(context, request))
 
 
+@xframe_options_deny
 def queue(request):
     template = loader.get_template("queue.html")
 
@@ -99,6 +105,7 @@ def queue(request):
     return HttpResponse(template.render(context, request))
 
 
+@xframe_options_deny
 def revision(request, hash):
     template = loader.get_template("revision.html")
 
@@ -118,6 +125,7 @@ def revision(request, hash):
     return HttpResponse(template.render(context, request))
 
 
+@xframe_options_deny
 def job(request, pk):
     template = loader.get_template("job.html")
 
@@ -154,6 +162,7 @@ def job(request, pk):
     return HttpResponse(template.render(context, request))
 
 
+@xframe_options_deny
 def cts_result(request, pk):
     template = loader.get_template("cts_result.html")
 
