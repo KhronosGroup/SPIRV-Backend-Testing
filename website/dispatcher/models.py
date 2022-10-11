@@ -1,6 +1,8 @@
+from symbol import testlist_star_expr
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from fetcher.models import Revision
+import bleach
 
 
 # Model representing a test plan to be executed on a runner
@@ -74,6 +76,12 @@ class Job(models.Model):
     class Meta:
         ordering = ["-date_added"]
 
+    def sanitize(self):
+        """
+        Sanitizes the object's data before passing to a view.
+        """
+        self.revision.sanitize()
+
 
 # Model representing a LIT test result
 class LitResult(models.Model):
@@ -92,6 +100,11 @@ class LitResult(models.Model):
     class Meta:
         ordering = ["-date_added"]
 
+    def sanitize(self):
+        """
+        Sanitizes the object's data before passing to a view.
+        """
+        self.parent_job.sanitize()
 
 # Model representing a CTS test result
 class CtsResult(models.Model):
@@ -121,3 +134,13 @@ class CtsResult(models.Model):
 
     class Meta:
         ordering = ["-date_added"]
+
+    def sanitize(self):
+        """
+        Sanitizes the object's data before passing to a view.
+        """
+        self.parent_job.sanitize()
+        self.standard_output = bleach.clean(self.standard_output)
+        self.standard_error = bleach.clean(self.standard_error)
+        self.test_executable = bleach.clean(self.test_executable)
+        self.test_arguments = bleach.clean(self.test_arguments)

@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import bleach
+
 
 # Model representing a single commit in the staging repository
 class Revision(models.Model):
@@ -16,3 +18,9 @@ class Revision(models.Model):
 
     class Meta:
         ordering = ["-date"]
+
+    def sanitize(self):
+        """
+        Sanitizes the object's data before passing to a view.
+        """
+        self.title = bleach.clean(self.title)

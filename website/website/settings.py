@@ -27,6 +27,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rest_framework',
+    'bleach',
     'fetcher.apps.FetcherConfig',
     'dispatcher.apps.DispatcherConfig',
     'viewer.apps.ViewerConfig',

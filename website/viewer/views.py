@@ -6,6 +6,7 @@ from django.http import Http404, HttpResponse
 from django.template import loader
 from django.utils import timezone
 from django.views.decorators.clickjacking import xframe_options_deny
+from django.views.decorators.cache import cache_page
 
 from fetcher.config import get_tested_repository_main_branch_name
 from fetcher.models import *
@@ -41,6 +42,7 @@ def _get_status_for_revision(revision):
 
 
 @xframe_options_deny
+@cache_page(60 * 15)
 def commited(request):
     template = loader.get_template("commited.html")
 
@@ -59,6 +61,12 @@ def commited(request):
     page_number = request.GET.get("page")
     page_object = paginator.get_page(page_number)
 
+    # Sanitize any strings.
+    last_tested_revision.sanitize()
+
+    for revision in revisions:
+        revision.sanitize()
+
     # Get primary job status for each revision.
     revision_status_pairs = []
     for revision in page_object:
@@ -74,12 +82,17 @@ def commited(request):
 
 
 @xframe_options_deny
+@cache_page(60 * 5)
 def staging(request):
     template = loader.get_template("staging.html")
 
     # Retrieve staging revisions created recently (in the last 60 days).
     recently = timezone.now() - timedelta(days=60)
     revisions = Revision.objects.filter(staging=True, date__gte=recently)
+
+    # Sanitize any strings in the revisions.
+    for revision in revisions:
+        revision.sanitize()
 
     # Get primary job status for each revision.
     revision_status_pairs = []
@@ -101,6 +114,10 @@ def queue(request):
         | Q(status=Job.Status.TESTING)
     ).order_by("date_added")
 
+    # Sanitize any strings in the jobs.
+    for job in jobs:
+        job.sanitize()
+
     context = {"page_title": "Queue", "jobs": jobs}
     return HttpResponse(template.render(context, request))
 
@@ -116,6 +133,12 @@ def revision(request, hash):
 
     # Get all jobs for the given revision.
     jobs = Job.objects.filter(revision=revision)
+
+    # Sanitize any strings.
+    revision.sanitize()
+
+    for job in jobs:
+        job.sanitize()
 
     context = {
         "page_title": "Revision " + revision.hash[:16],
@@ -137,6 +160,15 @@ def job(request, pk):
     # Get all test results for the given job.
     lit_results = LitResult.objects.filter(parent_job=job).order_by("date_added")
     cts_results = CtsResult.objects.filter(parent_job=job).order_by("date_added")
+
+    # Sanitize any strings.
+    job.sanitize()
+
+    for result in lit_results:
+        result.sanitize()
+
+    for result in cts_results:
+        result.sanitize()
 
     # Calculate passrate stats for all collected results.
     lit_results_total = lit_results.count()
@@ -170,6 +202,9 @@ def cts_result(request, pk):
         result = CtsResult.objects.get(pk=pk)
     except CtsResult.DoesNotExist:
         raise Http404("Result does not exist!")
+
+    # Sanitize any strings.
+    result.sanitize()
 
     context = {
         "page_title": str(result),
