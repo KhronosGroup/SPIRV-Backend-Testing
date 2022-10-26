@@ -129,10 +129,10 @@ def fetch_staging_revisions():
         if staging_branch_prefix not in branch_and_subject:
             continue
 
-        if "[SPIR-V]" not in branch_and_subject and "[SPIRV]" not in branch_and_subject:
+        if "[SPIR-V]" not in branch_and_subject.upper() and "[SPIRV]" not in branch_and_subject.upper():
             continue
 
-        if "[MLIR]" in branch_and_subject or "[mlir]" in branch_and_subject:
+        if "[MLIR]" in branch_and_subject.upper():
             continue
 
         # Extract the branch name.
