@@ -61,8 +61,9 @@ def commited(request):
     page_number = request.GET.get("page")
     page_object = paginator.get_page(page_number)
 
-    # Sanitize any strings.
-    last_tested_revision.sanitize()
+    # Sanitize any strings
+    if last_tested_revision:
+        last_tested_revision.sanitize()
 
     for revision in revisions:
         revision.sanitize()
