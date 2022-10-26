@@ -65,7 +65,7 @@ def commited(request):
     if last_tested_revision:
         last_tested_revision.sanitize()
 
-    for revision in revisions:
+    for revision in page_object:
         revision.sanitize()
 
     # Get primary job status for each revision.

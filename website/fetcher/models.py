@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.safestring import mark_safe
 import bleach
 
 
@@ -23,4 +24,4 @@ class Revision(models.Model):
         """
         Sanitizes the object's data before passing to a view.
         """
-        self.title = bleach.clean(self.title)
+        self.title = mark_safe(bleach.clean(self.title))

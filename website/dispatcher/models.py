@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils.safestring import mark_safe
 from fetcher.models import Revision
 import bleach
 
@@ -139,7 +140,7 @@ class CtsResult(models.Model):
         Sanitizes the object's data before passing to a view.
         """
         self.parent_job.sanitize()
-        self.standard_output = bleach.clean(self.standard_output)
-        self.standard_error = bleach.clean(self.standard_error)
-        self.test_executable = bleach.clean(self.test_executable)
-        self.test_arguments = bleach.clean(self.test_arguments)
+        self.standard_output = mark_safe(bleach.clean(self.standard_output))
+        self.standard_error = mark_safe(bleach.clean(self.standard_error))
+        self.test_executable = mark_safe(bleach.clean(self.test_executable))
+        self.test_arguments = mark_safe(bleach.clean(self.test_arguments))
