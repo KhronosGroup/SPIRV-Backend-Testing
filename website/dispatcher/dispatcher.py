@@ -1,5 +1,7 @@
+from datetime import timedelta
+from django.utils import timezone
 from fetcher.models import Revision
-from .models import Job
+from .models import Job, CtsResult
 
 
 def create_jobs():
@@ -23,3 +25,23 @@ def create_jobs():
         job.save()
 
     print("Finished creating jobs!")
+
+
+def dispose_dumps():
+    """
+    Deletes test dump files older than 60 days.
+    """
+    print("Deleting dumps...")
+
+    # Get CTS results older than 60 days.
+    old_results = CtsResult.objects.filter(
+        date_added__lte=(timezone.now() - timedelta(days=60))
+    ).exclude(dump="")
+
+    # Delete the dump files.
+    for result in old_results:
+        print(result, end=": ")
+        print(result.dump.name)
+        result.dump.delete(save=True)
+
+    print("Finished deleting dumps!")

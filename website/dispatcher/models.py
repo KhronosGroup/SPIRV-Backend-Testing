@@ -128,7 +128,7 @@ class CtsResult(models.Model):
     def __str__(self):
         return (
             "CTS " + self.test_category + "/" + self.test_name
-            + " (" + ("PASS" if self.passing else "FAIL") + ") "
+            + " (" + ("PASS" if self.passing else "FAIL") + ")"
             + " for job " + str(self.parent_job.pk)
         )
 

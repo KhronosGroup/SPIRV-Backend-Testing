@@ -4,4 +4,125 @@
 
 <h2>SPIR-V Backend Testing Automation</h2>
 
+<div class="row">
+    <div class="col">
+        <p class="text-justify">
+            <a href="https://github.com/llvm/llvm-project" class="link-secondary">SPIR-V backend inside the LLVM
+                project</a> follows an incremental development model and relies on the testing automation system of
+            changes uploaded to Phabricator and committed to the LLVM repository to ensure OpenCL conformance and
+            stability.
+        </p>
+    </div>
+</div>
+
+<h3>Tests</h3>
+<div class="row">
+    <div class="col">
+        <p class="text-justify">
+            The system fetches and builds each change/commit (revision) on Ubuntu 22.04 using cmake 3.22.1, Make 4.3,
+            and GCC 11.3.0. The following tests are executed on each revision:
+        </p>
+        <ul>
+            <li><a href="https://llvm.org/docs/CommandGuide/lit.html" class="link-secondary">LLVM Integration Tests
+                    (LIT)</a></li>
+            <li><a href="https://github.com/KhronosGroup/OpenCL-CTS" class="link-secondary">Khronos OpenCL Conformance
+                    Test Suite (CTS)</a></li>
+        </ul>
+        <p class="text-justify">
+            Additionaly, selected revisions are validated using:
+        </p>
+        <ul>
+            <li><a href="https://github.com/KhronosGroup/SPIRV-Tools" class="link-secondary">Khronos SPIR-V Validator
+                    (spirv-val)</a></li>
+        </ul>
+    </div>
+</div>
+
+<h3>Usage</h3>
+<div class="row">
+    <div class="col">
+        <p class="text-justify">
+            You can use the testing system in the following ways:
+        </p>
+        <ul>
+            <li>Create a new diff with <i>[SPIR-V]</i> in commit title in <a
+                    href="https://llvm.org/docs/Phabricator.html" class="link-secondary">Phabricator</a> to have the
+                change automatically tested.</li>
+            <li>View the testing queue, results, and download dumps/reproducers right on this website.</li>
+        </ul>
+        <p class="text-justify">
+            Testing jobs are organized in the following categories:
+        </p>
+        <ul>
+            <li>Commited - jobs testing changes commited to the LLVM's main branch which either modify files inside
+                <code>llvm/lib/Target/SPIRV</code> or <code>llvm/test/CodeGen/SPIRV</code></li>
+            <li>Staging - jobs testing diffs uploaded to Phabricator with <i>[SPIR-V]</i> in the commit title</li>
+        </ul>
+    </div>
+</div>
+
+<h3>Infrastructure</h3>
+<div class="row">
+    <div class="col">
+        <p class="text-justify">
+            This website and all test runners are powered by a custom system developed in the <a
+                href="https://github.com/KhronosGroup/SPIRV-Backend-Testing" class="link-secondary">Khronos
+                SPIRV-Backend-Testing repository</a>. <br><br>
+
+            The runtime tests (e.g. Khronos OpenCL CTS) and benchmarks are executed on custom built open source <a
+                href="https://github.com/intel/compute-runtime" class="link-secondary">Intel NEO driver</a> and <a
+                href="https://github.com/intel/intel-graphics-compiler" class="link-secondary">Intel Graphics
+                Compiler</a> with the SPIR-V backend integrated in the frontend. All the test jobs run on the following
+            hardware:
+        </p>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Runner #</th>
+                    <th scope="col">CPU</th>
+                    <th scope="col">Memory</th>
+                    <th scope="col">GPU</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Intel Core i9-9900K</td>
+                    <td>32 GB</td>
+                    <td>Intel UHD Graphics 630</td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Intel Core i7-7567U</td>
+                    <td>16 GB</td>
+                    <td>Intel Iris Plus Graphics 650</td>
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Intel Core i5-10210U</td>
+                    <td>16 GB</td>
+                    <td>Intel UHD Graphics 620</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<h3>Contact</h3>
+<div class="row">
+    <div class="col">
+        <p class="text-justify">
+            In case of any questions or issues with the testing infrastructure, please create a new issue in the <a
+                href="https://github.com/KhronosGroup/SPIRV-Backend-Testing" class="link-secondary">Khronos
+                SPIRV-Backend-Testing repository</a>, join one of the <a
+                href="https://llvm.org/docs/GettingInvolved.html#online-sync-ups" class="link-secondary">LLVM SPIR-V
+                Backend Working Group meetings</a>, or contact <a
+                href="https://docs.google.com/document/d/1UjX-LAwPjJ75Nmb8a5jz-Qrm-pPtKtQw0k1S1Lop9jU/edit#heading=h.8co7ybx9v1q"
+                class="link-secondary">the working group organizers</a>.
+        </p>
+    </div>
+</div>
+
 {% endblock %}
