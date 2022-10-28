@@ -1,0 +1,285 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<!-- Comparison input -->
+<script>
+    function compare() {
+        window.location.href = "/job/compare/" + document.getElementById("job1_compare_select").value + "/" + document.getElementById("job2_compare_select").value + "/";
+    }
+</script>
+<div class="row mb-4">
+    <div class="col-lg-12">
+        <div class="input-group">
+            <select class="form-select" id="job1_compare_select">
+                <option value="{{ job1.pk }}" selected>Job {{ job1.pk }} for {{ job1.revision.hash|truncatechars:16 }} / {{ job1.revision.title|truncatechars:80 }}</option>
+                {% for job in available_comparison_jobs %}
+                {% if job.pk != job1.pk %}
+                <option value="{{ job.pk }}">Job {{ job.pk }} for {{ job.revision.hash|truncatechars:16 }} / {{ job.revision.title|truncatechars:80 }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <select class="form-select" id="job2_compare_select">
+                <option value="{{ job2.pk }}" selected>Job {{ job2.pk }} for {{ job2.revision.hash|truncatechars:16 }} / {{ job2.revision.title|truncatechars:80 }}</option>
+                {% for job in available_comparison_jobs %}
+                {% if job.pk != job2.pk %}
+                <option value="{{ job.pk }}">Job {{ job.pk }} for {{ job.revision.hash|truncatechars:16 }} / {{ job.revision.title|truncatechars:80 }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <button onclick="compare()" class="btn btn-outline-secondary" type="button">Compare</button>
+        </div>
+    </div>
+</div>
+
+<h2>Compare results for <a href="{% url 'job' job1.pk %}">job {{ job1.pk }}</a> and <a href="{% url 'job' job2.pk %}">job {{ job2.pk }}</a></h2>
+
+<!-- Job metadata table -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <h3>Job {{ job1.pk }} metadata</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Job identifier</th>
+                    <td><a href="{% url 'job' job1.pk %}">{{ job1.pk }}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Creation date</th>
+                    <td>{{ job1.date_added|date:'SHORT_DATE_FORMAT' }} {{ job1.date_added|time:'H:i' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Primary</th>
+                    <td>{{ job1.primary_job }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                        {% if job1.status == 'S' %}
+                        Skipped
+                        {% elif job1.status == 'Q' %}
+                        Queued
+                        {% elif job1.status == 'D' %}
+                        Dispatched
+                        {% elif job1.status == 'T' %}
+                        Testing
+                        {% elif job1.status == 'C' %}
+                        Completed
+                        {% elif job1.status == 'F' %}
+                        Build failed
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit title</th>
+                    <td>{{ job1.revision.title|truncatechars:65 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit hash</th>
+                    <td>{{ job1.revision.hash }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit branch</th>
+                    <td>{{ job1.revision.branch }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Committed</th>
+                    <td>{{ job1.revision.date|date:'SHORT_DATE_FORMAT' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <h3>Job {{ job2.pk }} metadata</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Job identifier</th>
+                    <td><a href="{% url 'job' job2.pk %}">{{ job2.pk }}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Creation date</th>
+                    <td>{{ job2.date_added|date:'SHORT_DATE_FORMAT' }} {{ job2.date_added|time:'H:i' }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Primary</th>
+                    <td>{{ job2.primary_job }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Status</th>
+                    <td>
+                        {% if job2.status == 'S' %}
+                        Skipped
+                        {% elif job2.status == 'Q' %}
+                        Queued
+                        {% elif job2.status == 'D' %}
+                        Dispatched
+                        {% elif job2.status == 'T' %}
+                        Testing
+                        {% elif job2.status == 'C' %}
+                        Completed
+                        {% elif job2.status == 'F' %}
+                        Build failed
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit title</th>
+                    <td>{{ job2.revision.title|truncatechars:65 }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit hash</th>
+                    <td>{{ job2.revision.hash }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Commit branch</th>
+                    <td>{{ job2.revision.branch }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Committed</th>
+                    <td>{{ job2.revision.date|date:'SHORT_DATE_FORMAT' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- LIT test results -->
+{% if lit_result_pairs %}
+<div class="row">
+    <div class="col-lg-6">
+        <h3>Job {{ job1.pk }} LIT test results</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Total tests</th>
+                    <td>{{ job1_lit_results_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Passing tests</th>
+                    <td>{{ job1_lit_results_passing }} ({% widthratio job1_lit_results_passing job1_lit_results_total 100 %}%)</td>
+                </tr>
+                <tr>
+                    <th scope="row">Failing tests</th>
+                    <td>{{ job1_lit_results_failing }} ({% widthratio job1_lit_results_failing job1_lit_results_total 100 %}%)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <h3>Job {{ job2.pk }} LIT test results</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Total tests</th>
+                    <td>{{ job2_lit_results_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Passing tests</th>
+                    <td>{{ job2_lit_results_passing }} ({% widthratio job2_lit_results_passing job2_lit_results_total 100 %}%)</td>
+                </tr>
+                <tr>
+                    <th scope="row">Failing tests</th>
+                    <td>{{ job2_lit_results_failing }} ({% widthratio job2_lit_results_failing job2_lit_results_total 100 %}%)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- List of all LIT test results -->
+<h5>All results</h5>
+<div class="row mb-3">
+    <div class="col">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 60%">Test path</th>
+                    <th scope="col" style="width: 20%">Job {{ job1.pk }} status</th>
+                    <th scope="col" style="width: 20%">Job {{ job2.pk }} status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pair in lit_result_pairs %}
+                <tr {% if pair.0.passing != pair.1.passing %}class="table-warning"{% endif %}>
+                    <td>{% firstof pair.0.test_path pair.1.test_path %}</td>
+                    <td>{% if pair.0 %}{% if pair.0.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}{% endif %}</td>
+                    <td>{% if pair.1 %}{% if pair.1.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+<!-- CTS test results -->
+{% if cts_result_pairs %}
+<div class="row">
+    <div class="col-lg-6">
+        <h3>Job {{ job1.pk }} OpenCL conformance test results</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Total tests</th>
+                    <td>{{ job1_cts_results_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Passing tests</th>
+                    <td>{{ job1_cts_results_passing }} ({% widthratio job1_cts_results_passing job1_cts_results_total 100 %}%)</td>
+                </tr>
+                <tr>
+                    <th scope="row">Failing tests</th>
+                    <td>{{ job1_cts_results_failing }} ({% widthratio job1_cts_results_failing job1_cts_results_total 100 %}%)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6">
+        <h3>Job {{ job2.pk }} OpenCL conformance test results</h3>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">Total tests</th>
+                    <td>{{ job2_cts_results_total }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Passing tests</th>
+                    <td>{{ job2_cts_results_passing }} ({% widthratio job2_cts_results_passing job2_cts_results_total 100 %}%)</td>
+                </tr>
+                <tr>
+                    <th scope="row">Failing tests</th>
+                    <td>{{ job2_cts_results_failing }} ({% widthratio job2_cts_results_failing job2_cts_results_total 100 %}%)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- List of all CTS test results -->
+<h5>All results</h5>
+<div class="row">
+    <div class="col">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 25%">Test name</th>
+                    <th scope="col" style="width: 25%">Category</th>
+                    <th scope="col" style="width: 25%">Job {{ job1.pk }} status</th>
+                    <th scope="col" style="width: 25%">Job {{ job2.pk }} status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pair in cts_result_pairs %}
+                <tr {% if pair.0.passing != pair.1.passing %}class="table-warning"{% endif %}>
+                    <td>{% firstof pair.0.test_name pair.1.test_name %}</td>
+                    <td>{% firstof pair.0.test_category pair.1.test_category %}</td>
+                    <td>{% if pair.0 %}{% if pair.0.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}{% endif %}</td>
+                    <td>{% if pair.1 %}{% if pair.1.passing %}<span class="badge text-bg-success">PASS</span>{% else %}<span class="badge text-bg-danger">FAIL</span>{% endif %}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

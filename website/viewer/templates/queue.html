@@ -37,7 +37,12 @@
                         {% endif %}
                     </small>
                 </div>
-                <div class="col-4 text-end"><a href="{% url 'job' job.pk %}" class="btn btn-outline-dark">Results</a></div>
+                <div class="col-4 text-end">
+                    <div class="btn-group" role="group">
+                        <button type="button" onclick="location.href = '{% if latest_main_branch_primary_job %}{% url 'job_compare' job.pk latest_main_branch_primary_job.pk %}{% else %}{% url 'job_compare' job.pk job.pk %}{% endif %}';" class="btn btn-outline-dark">Comparison</button>
+                        <button type="button" onclick="location.href = '{% url 'job' job.pk %}';" class="btn btn-outline-dark">Results</button>
+                    </div>
+                </div>
             </div>
         </li>         
         {% endfor %}
