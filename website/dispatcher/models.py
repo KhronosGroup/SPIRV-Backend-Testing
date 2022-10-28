@@ -111,7 +111,7 @@ class CtsResult(models.Model):
     parent_job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     test_category = models.CharField(max_length=50)
-    test_name = models.CharField(max_length=50)
+    test_name = models.CharField(max_length=200)
     passing = models.BooleanField(default=False)
     timedout = models.BooleanField(default=False)
     start_time = models.DateTimeField()
