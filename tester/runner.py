@@ -213,9 +213,29 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     end_time = datetime.now()
     # Testing ended.
 
-    # Prepare the archive with dump files.
-    dumps_path = dumps_directory_path
-    shutil.make_archive(dumps_path, "gztar", dumps_directory_path)
+    # If dump files were generated, delete all irrelevant dumps and make an archive.
+    # Delete the dumps directory after.
+    if os.listdir(dumps_directory_path):
+        run_result = subprocess.run(
+            [
+                "find",
+                ".",
+                "-type",
+                "f",
+                "!",
+                "-name",
+                "*backend*",
+                "-delete",
+            ],
+            cwd=dumps_directory_path,
+            timeout=10 * 60,
+        )
+        shutil.make_archive(dumps_directory_path, "gztar", dumps_directory_path)
+        dumps_path = dumps_directory_path[:-1] + ".tar.gz"
+        shutil.rmtree(dumps_directory_path)
+    else:
+        dumps_path = None
+        os.rmdir(dumps_directory_path)
 
     return CTSResult(
         test_category,
@@ -231,7 +251,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
         get_cts_version(),
         get_igc_version(),
         get_neo_version(),
-        dumps_path[:-1] + ".tar.gz",
+        dumps_path,
     )
 
 
@@ -307,6 +327,8 @@ def run_queued_job() -> None:
         result = _run_cts_test(test["test_category"], test["test_name"])
         result.print()
         post_cts_result(pk, result)
+        if result.dump_path:
+            os.remove(result.dump_path)
 
     print(f"Finished testing job {pk} for {revision_hash}")
     update_job_status(pk, JobStatus.COMPLETED)

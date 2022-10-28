@@ -111,6 +111,10 @@ def post_cts_result(pk: int, result: CTSResult) -> None:
     """
     Post a CTS result for a job with a given primary key (pk).
     """
+    files = {}
+    if result.dump_path:
+        files = {"dump": open(result.dump_path, "rb")}
+
     response = session.post(
         url=API_ENDPOINT + "job/" + str(pk) + "/cts/",
         auth=auth.HTTPBasicAuth(RUNNER_NAME, RUNNER_KEY),
@@ -129,7 +133,7 @@ def post_cts_result(pk: int, result: CTSResult) -> None:
             "igc_version": result.igc_version,
             "neo_version": result.neo_version,
         },
-        files={"dump": open(result.dump_path, "rb")},
+        files=files,
     )
 
     if response.status_code == 404:
