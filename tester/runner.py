@@ -305,7 +305,7 @@ def run_queued_job() -> None:
 
     # If scheduled in this job, run all SPIR-V LIT tests and post the results.
     print("Running LIT tests...")
-    if "lit_all" in scheduled_testgroups:
+    if "lit_all" in scheduled_testgroups and scheduled_testgroups["lit_all"]:
         lit_results = _run_all_lit_tests()
         for result in lit_results:
             result.print()
@@ -317,6 +317,9 @@ def run_queued_job() -> None:
     for test in cts_tests:
         # Skip the test if it is not in the category scheduled to run.
         if not ("cts_" + test["test_category"]) in scheduled_testgroups:
+            continue
+
+        if not scheduled_testgroups["cts_" + test["test_category"]]:
             continue
 
         # Make sure the job was not cancelled before running the test.
