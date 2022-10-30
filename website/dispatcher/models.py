@@ -11,6 +11,7 @@ class Job(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
     primary_job = models.BooleanField(default=False)
     run_lit_all = models.BooleanField(default=True)
+    run_cts_allocations = models.BooleanField(default=True)
     run_cts_api = models.BooleanField(default=True)
     run_cts_basic = models.BooleanField(default=True)
     run_cts_atomics = models.BooleanField(default=True)

@@ -13,6 +13,7 @@ class JobSerializer(serializers.ModelSerializer):
             "status",
             "revision_hash",
             "run_lit_all",
+            "run_cts_allocations",
             "run_cts_api",
             "run_cts_basic",
             "run_cts_atomics",
