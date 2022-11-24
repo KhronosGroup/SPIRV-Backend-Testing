@@ -53,7 +53,7 @@ def commited(request):
 
     # Get last tested revision to show at the top of the page.
     last_tested_revision = None
-    for revision in revisions.filter(skip=False):
+    for revision in revisions.filter(skip=False).order_by("date_added"):
         if Job.objects.filter(revision=revision, status=Job.Status.COMPLETED).exists():
             last_tested_revision = revision
 
