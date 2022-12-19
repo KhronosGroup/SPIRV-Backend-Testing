@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from enum import Enum
+import time
 
 import requests
 from requests import adapters, auth
@@ -12,14 +13,22 @@ API_ENDPOINT = get_api_endpoint()
 RUNNER_NAME = os.environ["RUNNER_NAME"]
 RUNNER_KEY = os.environ["RUNNER_KEY"]
 session = requests.Session()
+session.headers = {'User-Agent': 'Mozilla/5.0'}
 session.mount(
     API_ENDPOINT,
-    adapters.HTTPAdapter(
-        max_retries=adapters.Retry(
-            total=5, backoff_factor=1, status_forcelist=[500, 502, 503, 504]
-        )
-    ),
+    adapters.HTTPAdapter(),
 )
+
+def retry_request(request_function, *args):
+    for time_between_tries in [0, 60, 3600, 7200]:
+        try:
+            time.sleep(time_between_tries)
+            return request_function(*args)
+        except requests.exceptions.ConnectionError:
+            print("Connection error after " + str(time_between_tries) + " seconds!")
+        except requests.exceptions.HTTPError:
+            print("HTTP error after " + str(time_between_tries) + " seconds!")
+    raise
 
 
 def get_queued_job():

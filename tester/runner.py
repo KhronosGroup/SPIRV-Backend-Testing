@@ -151,14 +151,13 @@ def _run_all_lit_tests() -> List[LITResult]:
         [lit_executable, lit_test_directory, "--max-time", "30"], stdout=subprocess.PIPE
     )
     standard_output = run_result.stdout.decode("utf-8")
-    output_result_lines = standard_output[
-        standard_output.find("workers --")
-        + len("workers --") : standard_output.rfind("********************")
-    ].splitlines()[1:-3]
 
     # Create a LITResult for each line with result.
     results = []
-    for line in output_result_lines:
+    for line in standard_output.splitlines():
+        if not ": LLVM :: " in line:
+            continue
+
         test_path = line.split(" ")[3]
         passing = not "FAIL" in line
         results.append(LITResult(test_path, passing))
@@ -196,11 +195,12 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
             stderr=subprocess.PIPE,
             cwd=os.path.dirname(test_executable),
             env=environment,
-            timeout=4 * 60 * 60,
+            timeout=2 * 60 * 60,
         )
         passing = (
             run_result.returncode == 0
-            and not "failed" in run_result.stdout.decode("utf-8").lower()
+            and ("PASSED test." in run_result.stdout.decode("utf-8") 
+            or "failed" not in run_result.stdout.decode("utf-8").lower())
         )
         timedout = False
         standard_output = run_result.stdout.decode("utf-8").replace("\\n", "\n")
@@ -208,8 +208,8 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     except subprocess.TimeoutExpired:
         passing = False
         timedout = True
-        standard_output = "Test timed out after 4 hours"
-        standard_error = "Test timed out after 4 hours"
+        standard_output = "Test timed out after 2 hours"
+        standard_error = "Test timed out after 2 hours"
     end_time = datetime.now()
     # Testing ended.
 
@@ -230,7 +230,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
             cwd=dumps_directory_path,
             timeout=10 * 60,
         )
-        shutil.make_archive(dumps_directory_path, "gztar", dumps_directory_path)
+        shutil.make_archive(dumps_directory_path[:-1], "gztar", dumps_directory_path)
         dumps_path = dumps_directory_path[:-1] + ".tar.gz"
         shutil.rmtree(dumps_directory_path)
     else:
@@ -264,7 +264,7 @@ def run_queued_job() -> None:
     """
     # Get a single queued job from the API. The status of this job is autmatically
     # changed from "Queued" to "Dispatched".
-    pk, revision_hash, scheduled_testgroups = get_queued_job()
+    pk, revision_hash, scheduled_testgroups = retry_request(get_queued_job)
 
     if not pk:
         # No job for testing
@@ -273,13 +273,13 @@ def run_queued_job() -> None:
     print(f"Testing job {pk} for revision {revision_hash}")
 
     # Change the status to "Testing".
-    update_job_status(pk, JobStatus.TESTING)
+    retry_request(update_job_status, pk, JobStatus.TESTING)
 
     # Checkout the given LLVM commit.
     success = _checkout_llvm_spirv_backend_revision(revision_hash)
     if not success:
         print("Checking out the git commit failed")
-        update_job_status(pk, JobStatus.BUILD_FAILED)
+        retry_request(update_job_status, pk, JobStatus.BUILD_FAILED)
         return True
 
     # Build the LLVM project.
@@ -287,7 +287,7 @@ def run_queued_job() -> None:
     success = _build_llvm_spirv_backend()
     if not success:
         print("Building the LLVM project failed")
-        update_job_status(pk, JobStatus.BUILD_FAILED)
+        retry_request(update_job_status, pk, JobStatus.BUILD_FAILED)
         return True
 
     # Build the backend wrapper.
@@ -295,11 +295,11 @@ def run_queued_job() -> None:
     success = _build_llvm_backend_wrapper()
     if not success:
         print("Building the backend wrapper failed")
-        update_job_status(pk, JobStatus.BUILD_FAILED)
+        retry_request(update_job_status, pk, JobStatus.BUILD_FAILED)
         return True
 
     # Make sure the job was not cancelled before running the test.
-    if get_job_status(pk) != JobStatus.TESTING:
+    if retry_request(get_job_status, pk) != JobStatus.TESTING:
         print("Testing job was cancelled")
         return True
 
@@ -309,7 +309,7 @@ def run_queued_job() -> None:
         lit_results = _run_all_lit_tests()
         for result in lit_results:
             result.print()
-            post_lit_result(pk, result)
+            retry_request(post_lit_result, pk, result)
 
     # Run all scheduled OpenCL CTS tests and post the results.
     print("Running OpenCL CTS tests...")
@@ -323,16 +323,16 @@ def run_queued_job() -> None:
             continue
 
         # Make sure the job was not cancelled before running the test.
-        if get_job_status(pk) != JobStatus.TESTING:
+        if retry_request(get_job_status, pk) != JobStatus.TESTING:
             print("Testing job was cancelled")
             return False
 
         result = _run_cts_test(test["test_category"], test["test_name"])
         result.print()
-        post_cts_result(pk, result)
+        retry_request(post_cts_result, pk, result)
         if result.dump_path:
             os.remove(result.dump_path)
 
     print(f"Finished testing job {pk} for {revision_hash}")
-    update_job_status(pk, JobStatus.COMPLETED)
+    retry_request(update_job_status, pk, JobStatus.COMPLETED)
     return True
