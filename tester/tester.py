@@ -12,7 +12,7 @@ def run_test_bot():
         if not job_was_available:
             # No queued job was available or a job was cancelled. Sleep for 3 minutes
             # to not send API requests continuously.
-            sleep(3 * 60)
+            sleep(5 * 60)
 
 
 def main():
