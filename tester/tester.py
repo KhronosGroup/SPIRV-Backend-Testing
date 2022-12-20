@@ -10,7 +10,7 @@ def run_test_bot():
     while True:
         job_was_available = run_queued_job()
         if not job_was_available:
-            # No queued job was available or a job was cancelled. Sleep for 3 minutes
+            # No queued job was available or a job was cancelled. Sleep for 5 minutes
             # to not send API requests continuously.
             sleep(5 * 60)
 
