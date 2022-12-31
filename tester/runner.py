@@ -4,7 +4,7 @@ import subprocess
 from datetime import datetime
 from typing import List
 
-from communication import *
+from communication import APISession, JobStatus
 from config import *
 from results import CTSResult, LITResult
 
@@ -254,18 +254,16 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     )
 
 
-def test_remote_queued_job() -> bool:
+def test_remote_queued_job(session: APISession) -> bool:
     """
     Get a queued job from the API, checkout the given revision, build the backend,
     build the wrapper, run the tests, and post the results.
 
     Returns False in case no testing job was available or current job was cancelled.
     """
-    assert SESSION is not None, "Session with the API was not created!"
-
     # Get a single queued job from the API. The status of this job is autmatically
     # changed from "Queued" to "Dispatched".
-    pk, revision_hash, scheduled_testgroups = retry_request(get_queued_job)
+    pk, revision_hash, scheduled_testgroups = session.get_queued_job()
 
     if not pk:
         # No job for testing
@@ -274,13 +272,13 @@ def test_remote_queued_job() -> bool:
     print(f"Testing job {pk} for revision {revision_hash}")
 
     # Change the status to "Testing".
-    retry_request(update_job_status, pk, JobStatus.TESTING)
+    session.update_job_status(pk, JobStatus.TESTING)
 
     # Checkout the given LLVM commit.
     success = _checkout_llvm_spirv_backend_revision(revision_hash)
     if not success:
         print("Checking out the git commit failed")
-        retry_request(update_job_status, pk, JobStatus.BUILD_FAILED)
+        session.update_job_status(pk, JobStatus.BUILD_FAILED)
         return True
 
     # Build the LLVM project.
@@ -288,7 +286,7 @@ def test_remote_queued_job() -> bool:
     success = _build_llvm_spirv_backend()
     if not success:
         print("Building the LLVM project failed")
-        retry_request(update_job_status, pk, JobStatus.BUILD_FAILED)
+        session.update_job_status(pk, JobStatus.BUILD_FAILED)
         return True
 
     # Build the backend wrapper.
@@ -296,11 +294,11 @@ def test_remote_queued_job() -> bool:
     success = _build_llvm_backend_wrapper()
     if not success:
         print("Building the backend wrapper failed")
-        retry_request(update_job_status, pk, JobStatus.BUILD_FAILED)
+        session.update_job_status(pk, JobStatus.BUILD_FAILED)
         return True
 
     # Make sure the job was not cancelled before running the test.
-    if retry_request(get_job_status, pk) != JobStatus.TESTING:
+    if session.get_job_status(pk) != JobStatus.TESTING:
         print("Testing job was cancelled")
         return True
 
@@ -310,7 +308,7 @@ def test_remote_queued_job() -> bool:
         lit_results = _run_all_lit_tests()
         for result in lit_results:
             result.print()
-            retry_request(post_lit_result, pk, result)
+            session.post_lit_result(pk, result)
 
     # Run all scheduled OpenCL CTS tests and post the results.
     print("Running OpenCL CTS tests...")
@@ -324,24 +322,24 @@ def test_remote_queued_job() -> bool:
             continue
 
         # Make sure the job was not cancelled before running the test.
-        if retry_request(get_job_status, pk) != JobStatus.TESTING:
+        if session.get_job_status(pk) != JobStatus.TESTING:
             print("Testing job was cancelled")
             return False
 
         result = _run_cts_test(test["test_category"], test["test_name"])
         result.print()
-        retry_request(post_cts_result, pk, result)
+        session.post_cts_result(pk, result)
         if result.dump_path:
             os.remove(result.dump_path)
 
     print(f"Finished testing job {pk} for {revision_hash}")
-    retry_request(update_job_status, pk, JobStatus.COMPLETED)
+    session.update_job_status(pk, JobStatus.COMPLETED)
     return True
 
 
 def test_local_full_job() -> None:
     """
-    Run all LIT and OpenCL CTS tests on a local HEAD revision of the backend. 
+    Run all LIT and OpenCL CTS tests on a local HEAD revision of the backend.
     This function assumes all the environment is already configured and built.
     """
     print("Testing full job for local HEAD revision")

@@ -1,18 +1,18 @@
 import argparse
 import sys
 from time import sleep
-from communication import create_session
+from communication import APISession
 from runner import test_remote_queued_job, test_local_full_job
 
 
 def run_automated_testing(api_endpoint: str, runner_name: str, runner_key: str) -> None:
-    # Set the API endpoint and create a new session with provided auth key.
-    create_session(api_endpoint, runner_name, runner_key)
+    # Create a new session with the API.
+    session = APISession(api_endpoint, runner_name, runner_key)
 
     # Infinite test loop: get a testing job, build the environment, run the tests,
     # and submit the results.
     while True:
-        if not test_remote_queued_job():
+        if not test_remote_queued_job(session):
             # No queued job was available or a job was cancelled. Sleep for 5 minutes
             # to not send API requests continuously.
             sleep(5 * 60)
