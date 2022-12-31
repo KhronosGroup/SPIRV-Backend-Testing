@@ -64,7 +64,7 @@ def main():
 
     if arguments.mode == "auto":
         print("Testing all queued jobs in automated testing mode...")
-        run_automated_testing()
+        run_automated_testing(arguments.api, arguments.runnername, arguments.runnerkey)
     elif arguments.mode == "manual":
         print("Testing a local HEAD revision of the backend...")
         run_manual_testing()
