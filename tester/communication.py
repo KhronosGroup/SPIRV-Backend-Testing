@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from enum import Enum
 import time
@@ -6,20 +5,31 @@ import time
 import requests
 from requests import adapters, auth
 
-from config import get_api_endpoint
 from results import LITResult, CTSResult
 
-API_ENDPOINT = get_api_endpoint()
-RUNNER_NAME = os.environ["RUNNER_NAME"]
-RUNNER_KEY = os.environ["RUNNER_KEY"]
-session = requests.Session()
-session.headers = {'User-Agent': 'Mozilla/5.0'}
-session.mount(
-    API_ENDPOINT,
-    adapters.HTTPAdapter(),
-)
+API_ENDPOINT: str = None
+SESSION: requests.session = None
+
+
+def create_session(api_endpoint: str, runner_name: str, runner_key: str) -> None:
+    """
+    Sets the API endpoint and creates a session.
+    """
+    global API_ENDPOINT, SESSION
+    API_ENDPOINT = api_endpoint
+    SESSION = requests.Session()
+    SESSION.headers = {"User-Agent": "Mozilla/5.0"}
+    SESSION.auth = auth.HTTPBasicAuth(runner_name, runner_key)
+    SESSION.mount(
+        api_endpoint,
+        adapters.HTTPAdapter(),
+    )
+
 
 def retry_request(request_function, *args):
+    """
+    Tries to send a given request in various time intervals.
+    """
     for time_between_tries in [0, 60, 3600, 7200]:
         try:
             time.sleep(time_between_tries)
@@ -37,9 +47,7 @@ def get_queued_job():
     Sending this request automatically marks the job as "Dispatched".
     """
     # Deliberately send "POST" request since dispatching changes database data.
-    response = session.post(
-        url=API_ENDPOINT + "dispatch/", auth=auth.HTTPBasicAuth(RUNNER_NAME, RUNNER_KEY)
-    )
+    response = SESSION.post(url=API_ENDPOINT + "dispatch/")
 
     if response.status_code == 204:
         # No jobs for testing available.
@@ -71,9 +79,8 @@ def get_job_status(pk: int) -> JobStatus:
     """
     Get status of a job with given primary key (pk).
     """
-    response = session.get(
+    response = SESSION.get(
         url=API_ENDPOINT + "job/" + str(pk) + "/",
-        auth=auth.HTTPBasicAuth(RUNNER_NAME, RUNNER_KEY),
     )
 
     if response.status_code == 404:
@@ -88,9 +95,8 @@ def update_job_status(pk: int, status: JobStatus) -> None:
     """
     Update status of a job with given primary key (pk).
     """
-    response = session.put(
+    response = SESSION.put(
         url=API_ENDPOINT + "job/" + str(pk) + "/",
-        auth=auth.HTTPBasicAuth(RUNNER_NAME, RUNNER_KEY),
         data={"status": status.value},
     )
 
@@ -104,9 +110,8 @@ def post_lit_result(pk: int, result: LITResult) -> None:
     """
     Post a LIT result for a job with a given primary key (pk).
     """
-    response = session.post(
+    response = SESSION.post(
         url=API_ENDPOINT + "job/" + str(pk) + "/lit/",
-        auth=auth.HTTPBasicAuth(RUNNER_NAME, RUNNER_KEY),
         data={"test_path": result.test_path, "passing": result.passing},
     )
 
@@ -124,9 +129,8 @@ def post_cts_result(pk: int, result: CTSResult) -> None:
     if result.dump_path:
         files = {"dump": open(result.dump_path, "rb")}
 
-    response = session.post(
+    response = SESSION.post(
         url=API_ENDPOINT + "job/" + str(pk) + "/cts/",
-        auth=auth.HTTPBasicAuth(RUNNER_NAME, RUNNER_KEY),
         data={
             "test_category": result.test_category,
             "test_name": result.test_name,

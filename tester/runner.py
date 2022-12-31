@@ -197,10 +197,9 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
             env=environment,
             timeout=2 * 60 * 60,
         )
-        passing = (
-            run_result.returncode == 0
-            and ("PASSED test." in run_result.stdout.decode("utf-8") 
-            or "failed" not in run_result.stdout.decode("utf-8").lower())
+        passing = run_result.returncode == 0 and (
+            "PASSED test." in run_result.stdout.decode("utf-8")
+            or "failed" not in run_result.stdout.decode("utf-8").lower()
         )
         timedout = False
         standard_output = run_result.stdout.decode("utf-8").replace("\\n", "\n")
@@ -255,13 +254,15 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     )
 
 
-def run_queued_job() -> None:
+def test_remote_queued_job() -> bool:
     """
     Get a queued job from the API, checkout the given revision, build the backend,
     build the wrapper, run the tests, and post the results.
 
     Returns False in case no testing job was available or current job was cancelled.
     """
+    assert SESSION is not None, "Session with the API was not created!"
+
     # Get a single queued job from the API. The status of this job is autmatically
     # changed from "Queued" to "Dispatched".
     pk, revision_hash, scheduled_testgroups = retry_request(get_queued_job)
@@ -336,3 +337,27 @@ def run_queued_job() -> None:
     print(f"Finished testing job {pk} for {revision_hash}")
     retry_request(update_job_status, pk, JobStatus.COMPLETED)
     return True
+
+
+def test_local_full_job() -> None:
+    """
+    Run all LIT and OpenCL CTS tests on a local HEAD revision of the backend. 
+    This function assumes all the environment is already configured and built.
+    """
+    print("Testing full job for local HEAD revision")
+    print("Skipping checkout and build")
+
+    # Run all SPIR-V LIT tests.
+    print("Running LIT tests...")
+    lit_results = _run_all_lit_tests()
+    for result in lit_results:
+        result.print()
+
+    # Run all scheduled OpenCL CTS tests.
+    print("Running OpenCL CTS tests...")
+    cts_tests = get_cts_test_list()
+    for test in cts_tests:
+        result = _run_cts_test(test["test_category"], test["test_name"])
+        result.print()
+
+    print(f"Finished full testing job for local HEAD revision")
