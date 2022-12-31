@@ -1,5 +1,6 @@
 import os
 import json
+from typing import List
 
 # Location of the config.json file
 CONFIG_FILE_PATH = os.path.join(
@@ -64,14 +65,14 @@ def get_cts_test_executable_absolute_path(test_category: str, test_name: str) ->
     return test_absolute_path
 
 
-def get_cts_test_arguments(test_category: str, test_name: str) -> str:
+def get_cts_test_arguments(test_category: str, test_name: str) -> List[str]:
     """
-    Get CLI arguments required to run the given OpenCL CTS test.
+    Get a list of CLI arguments required to run the given OpenCL CTS test.
     """
     test_list = get_cts_test_list()
     for test in test_list:
         if test["test_category"] == test_category and test["test_name"] == test_name:
-            return test["arguments"]
+            return test["arguments"].split()
 
     raise KeyError(f"Test {test_category}/{test_name} definition was not found")
 

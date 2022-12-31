@@ -190,7 +190,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     start_time = datetime.now()
     try:
         run_result = subprocess.run(
-            [test_executable, test_arguments],
+            [test_executable] + test_arguments,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             cwd=os.path.dirname(test_executable),

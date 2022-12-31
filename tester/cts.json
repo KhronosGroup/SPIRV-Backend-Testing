@@ -6765,601 +6765,601 @@
         "test_name": "acos",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "acos"
+        "arguments": "acos -m -s -v"
     },
     {
         "test_name": "acosh",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "acosh"
+        "arguments": "acosh -m -s -v"
     },
     {
         "test_name": "acospi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "acospi"
+        "arguments": "acospi -m -s -v"
     },
     {
         "test_name": "add",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "add"
+        "arguments": "add -m -s -v"
     },
     {
         "test_name": "asin",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "asin"
+        "arguments": "asin -m -s -v"
     },
     {
         "test_name": "asinh",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "asinh"
+        "arguments": "asinh -m -s -v"
     },
     {
         "test_name": "asinpi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "asinpi"
+        "arguments": "asinpi -m -s -v"
     },
     {
         "test_name": "assignment",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "assignment"
+        "arguments": "assignment -m -s -v"
     },
     {
         "test_name": "atan",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "atan"
+        "arguments": "atan -m -s -v"
     },
     {
         "test_name": "atan2",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "atan2"
+        "arguments": "atan2 -m -s -v"
     },
     {
         "test_name": "atan2pi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "atan2pi"
+        "arguments": "atan2pi -m -s -v"
     },
     {
         "test_name": "atanh",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "atanh"
+        "arguments": "atanh -m -s -v"
     },
     {
         "test_name": "atanpi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "atanpi"
+        "arguments": "atanpi -m -s -v"
     },
     {
         "test_name": "cbrt",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "cbrt"
+        "arguments": "cbrt -m -s -v"
     },
     {
         "test_name": "ceil",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "ceil"
+        "arguments": "ceil -m -s -v"
     },
     {
         "test_name": "copysign",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "copysign"
+        "arguments": "copysign -m -s -v"
     },
     {
         "test_name": "cos",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "cos"
+        "arguments": "cos -m -s -v"
     },
     {
         "test_name": "cosh",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "cosh"
+        "arguments": "cosh -m -s -v"
     },
     {
         "test_name": "cospi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "cospi"
+        "arguments": "cospi -m -s -v"
     },
     {
         "test_name": "divide",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "divide"
+        "arguments": "divide -m -s -v"
     },
     {
         "test_name": "divide_cr",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "divide_cr"
+        "arguments": "divide_cr -m -s -v"
     },
     {
         "test_name": "exp",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "exp"
+        "arguments": "exp -m -s -v"
     },
     {
         "test_name": "exp10",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "exp10"
+        "arguments": "exp10 -m -s -v"
     },
     {
         "test_name": "exp2",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "exp2"
+        "arguments": "exp2 -m -s -v"
     },
     {
         "test_name": "expm1",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "expm1"
+        "arguments": "expm1 -m -s -v"
     },
     {
         "test_name": "fabs",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fabs"
+        "arguments": "fabs -m -s -v"
     },
     {
         "test_name": "fdim",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fdim"
+        "arguments": "fdim -m -s -v"
     },
     {
         "test_name": "floor",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "floor"
+        "arguments": "floor -m -s -v"
     },
     {
         "test_name": "fma",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fma"
+        "arguments": "fma -m -s -v"
     },
     {
         "test_name": "fmax",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fmax"
+        "arguments": "fmax -m -s -v"
     },
     {
         "test_name": "fmin",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fmin"
+        "arguments": "fmin -m -s -v"
     },
     {
         "test_name": "fmod",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fmod"
+        "arguments": "fmod -m -s -v"
     },
     {
         "test_name": "fract",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "fract"
+        "arguments": "fract -m -s -v"
     },
     {
         "test_name": "frexp",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "frexp"
+        "arguments": "frexp -m -s -v"
     },
     {
         "test_name": "half_cos",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_cos"
+        "arguments": "half_cos -m -s -v"
     },
     {
         "test_name": "half_divide",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_divide"
+        "arguments": "half_divide -m -s -v"
     },
     {
         "test_name": "half_exp",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_exp"
+        "arguments": "half_exp -m -s -v"
     },
     {
         "test_name": "half_exp10",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_exp10"
+        "arguments": "half_exp10 -m -s -v"
     },
     {
         "test_name": "half_exp2",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_exp2"
+        "arguments": "half_exp2 -m -s -v"
     },
     {
         "test_name": "half_log",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_log"
+        "arguments": "half_log -m -s -v"
     },
     {
         "test_name": "half_log10",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_log10"
+        "arguments": "half_log10 -m -s -v"
     },
     {
         "test_name": "half_log2",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_log2"
+        "arguments": "half_log2 -m -s -v"
     },
     {
         "test_name": "half_powr",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_powr"
+        "arguments": "half_powr -m -s -v"
     },
     {
         "test_name": "half_recip",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_recip"
+        "arguments": "half_recip -m -s -v"
     },
     {
         "test_name": "half_rsqrt",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_rsqrt"
+        "arguments": "half_rsqrt -m -s -v"
     },
     {
         "test_name": "half_sin",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_sin"
+        "arguments": "half_sin -m -s -v"
     },
     {
         "test_name": "half_sqrt",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_sqrt"
+        "arguments": "half_sqrt -m -s -v"
     },
     {
         "test_name": "half_tan",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "half_tan"
+        "arguments": "half_tan -m -s -v"
     },
     {
         "test_name": "hypot",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "hypot"
+        "arguments": "hypot -m -s -v"
     },
     {
         "test_name": "ilogb",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "ilogb"
+        "arguments": "ilogb -m -s -v"
     },
     {
         "test_name": "isequal",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isequal"
+        "arguments": "isequal -m -s -v"
     },
     {
         "test_name": "isfinite",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isfinite"
+        "arguments": "isfinite -m -s -v"
     },
     {
         "test_name": "isgreater",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isgreater"
+        "arguments": "isgreater -m -s -v"
     },
     {
         "test_name": "isgreaterequal",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isgreaterequal"
+        "arguments": "isgreaterequal -m -s -v"
     },
     {
         "test_name": "isinf",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isinf"
+        "arguments": "isinf -m -s -v"
     },
     {
         "test_name": "isless",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isless"
+        "arguments": "isless -m -s -v"
     },
     {
         "test_name": "islessequal",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "islessequal"
+        "arguments": "islessequal -m -s -v"
     },
     {
         "test_name": "islessgreater",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "islessgreater"
+        "arguments": "islessgreater -m -s -v"
     },
     {
         "test_name": "isnan",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isnan"
+        "arguments": "isnan -m -s -v"
     },
     {
         "test_name": "isnormal",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isnormal"
+        "arguments": "isnormal -m -s -v"
     },
     {
         "test_name": "isnotequal",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isnotequal"
+        "arguments": "isnotequal -m -s -v"
     },
     {
         "test_name": "isordered",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isordered"
+        "arguments": "isordered -m -s -v"
     },
     {
         "test_name": "isunordered",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "isunordered"
+        "arguments": "isunordered -m -s -v"
     },
     {
         "test_name": "ldexp",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "ldexp"
+        "arguments": "ldexp -m -s -v"
     },
     {
         "test_name": "lgamma",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "lgamma"
+        "arguments": "lgamma -m -s -v"
     },
     {
         "test_name": "lgamma_r",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "lgamma_r"
+        "arguments": "lgamma_r -m -s -v"
     },
     {
         "test_name": "log",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "log"
+        "arguments": "log -m -s -v"
     },
     {
         "test_name": "log10",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "log10"
+        "arguments": "log10 -m -s -v"
     },
     {
         "test_name": "log1p",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "log1p"
+        "arguments": "log1p -m -s -v"
     },
     {
         "test_name": "log2",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "log2"
+        "arguments": "log2 -m -s -v"
     },
     {
         "test_name": "logb",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "logb"
+        "arguments": "logb -m -s -v"
     },
     {
         "test_name": "mad",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "mad"
+        "arguments": "mad -m -s -v"
     },
     {
         "test_name": "maxmag",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "maxmag"
+        "arguments": "maxmag -m -s -v"
     },
     {
         "test_name": "minmag",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "minmag"
+        "arguments": "minmag -m -s -v"
     },
     {
         "test_name": "modf",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "modf"
+        "arguments": "modf -m -s -v"
     },
     {
         "test_name": "multiply",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "multiply"
+        "arguments": "multiply -m -s -v"
     },
     {
         "test_name": "nan",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "nan"
+        "arguments": "nan -m -s -v"
     },
     {
         "test_name": "nextafter",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "nextafter"
+        "arguments": "nextafter -m -s -v"
     },
     {
         "test_name": "not",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "not"
+        "arguments": "not -m -s -v"
     },
     {
         "test_name": "pow",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "pow"
+        "arguments": "pow -m -s -v"
     },
     {
         "test_name": "pown",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "pown"
+        "arguments": "pown -m -s -v"
     },
     {
         "test_name": "powr",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "powr"
+        "arguments": "powr -m -s -v"
     },
     {
         "test_name": "remainder",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "remainder"
+        "arguments": "remainder -m -s -v"
     },
     {
         "test_name": "remquo",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "remquo"
+        "arguments": "remquo -m -s -v"
     },
     {
         "test_name": "rint",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "rint"
+        "arguments": "rint -m -s -v"
     },
     {
         "test_name": "rootn",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "rootn"
+        "arguments": "rootn -m -s -v"
     },
     {
         "test_name": "round",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "round"
+        "arguments": "round -m -s -v"
     },
     {
         "test_name": "rsqrt",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "rsqrt"
+        "arguments": "rsqrt -m -s -v"
     },
     {
         "test_name": "signbit",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "signbit"
+        "arguments": "signbit -m -s -v"
     },
     {
         "test_name": "sin",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "sin"
+        "arguments": "sin -m -s -v"
     },
     {
         "test_name": "sincos",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "sincos"
+        "arguments": "sincos -m -s -v"
     },
     {
         "test_name": "sinh",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "sinh"
+        "arguments": "sinh -m -s -v"
     },
     {
         "test_name": "sinpi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "sinpi"
+        "arguments": "sinpi -m -s -v"
     },
     {
         "test_name": "sqrt",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "sqrt"
+        "arguments": "sqrt -m -s -v"
     },
     {
         "test_name": "sqrt_cr",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "sqrt_cr"
+        "arguments": "sqrt_cr -m -s -v"
     },
     {
         "test_name": "subtract",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "subtract"
+        "arguments": "subtract -m -s -v"
     },
     {
         "test_name": "tan",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "tan"
+        "arguments": "tan -m -s -v"
     },
     {
         "test_name": "tanh",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "tanh"
+        "arguments": "tanh -m -s -v"
     },
     {
         "test_name": "tanpi",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "tanpi"
+        "arguments": "tanpi -m -s -v"
     },
     {
         "test_name": "trunc",
         "test_category": "math_brute_force",
         "executable_path": "test_conformance/math_brute_force/bin/test_bruteforce",
-        "arguments": "trunc"
+        "arguments": "trunc -m -s -v"
     },
     {
         "test_name": "svm_byte_granularity",
