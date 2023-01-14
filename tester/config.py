@@ -77,6 +77,18 @@ def get_cts_test_arguments(test_category: str, test_name: str) -> List[str]:
     raise KeyError(f"Test {test_category}/{test_name} definition was not found")
 
 
+def get_cts_test_time_limit(test_category: str, test_name: str) -> int:
+    """
+    Get a the time limit for the given OpenCL CTS test.
+    """
+    test_list = get_cts_test_list()
+    for test in test_list:
+        if test["test_category"] == test_category and test["test_name"] == test_name:
+            return test["time_limit"]
+
+    raise KeyError(f"Test {test_category}/{test_name} definition was not found")
+
+
 def get_tested_repository_build_path() -> str:
     """
     Get the absolute path to the tested repository build directory.
