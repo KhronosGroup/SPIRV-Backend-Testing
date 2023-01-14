@@ -171,6 +171,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     """
     test_executable = get_cts_test_executable_absolute_path(test_category, test_name)
     test_arguments = get_cts_test_arguments(test_category, test_name)
+    test_time_limit = get_cts_test_time_limit(test_category, test_name)
 
     # Prepare a temporary directory for dump files.
     dumps_directory_name = (
@@ -195,7 +196,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
             stderr=subprocess.PIPE,
             cwd=os.path.dirname(test_executable),
             env=environment,
-            timeout=2 * 60 * 60,
+            timeout=test_time_limit * 60,
         )
         passing = run_result.returncode == 0 and (
             "PASSED test." in run_result.stdout.decode("utf-8")
@@ -207,8 +208,8 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     except subprocess.TimeoutExpired:
         passing = False
         timedout = True
-        standard_output = "Test timed out after 2 hours"
-        standard_error = "Test timed out after 2 hours"
+        standard_output = f"Test timed out after {test_time_limit} minutes"
+        standard_error = f"Test timed out after {test_time_limit} minutes"
     end_time = datetime.now()
     # Testing ended.
 
