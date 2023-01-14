@@ -171,6 +171,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     """
     test_executable = get_cts_test_executable_absolute_path(test_category, test_name)
     test_arguments = get_cts_test_arguments(test_category, test_name)
+    test_environment = get_cts_test_environment(test_category, test_name)
     test_time_limit = get_cts_test_time_limit(test_category, test_name)
 
     # Prepare a temporary directory for dump files.
@@ -186,6 +187,9 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     environment["IGC_ShaderDumpEnable"] = "1"
     environment["IGC_ShaderDumpPidDisable"] = "1"
     environment["IGC_DumpToCustomDir"] = dumps_directory_path
+
+    for variable in test_environment:
+        environment[variable] = "1"
 
     # Start the test.
     start_time = datetime.now()
