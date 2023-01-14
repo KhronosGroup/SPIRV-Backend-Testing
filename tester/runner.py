@@ -247,7 +247,7 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
         standard_output,
         standard_error,
         test_executable,
-        test_arguments,
+        " ".join(test_arguments),
         get_cts_version(),
         get_igc_version(),
         get_neo_version(),
