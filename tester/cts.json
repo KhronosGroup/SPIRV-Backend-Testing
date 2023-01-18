@@ -10251,6 +10251,8 @@
         "test_name": "2Darray",
         "test_category": "samplerlessReads",
         "executable_path": "test_conformance/images/samplerlessReads/bin/test_samplerless_reads",
-        "arguments": "2Darray"
+        "arguments": "2Darray",
+        "environment": "",
+        "time_limit": 120
     }
 ]
