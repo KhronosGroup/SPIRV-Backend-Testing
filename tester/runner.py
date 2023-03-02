@@ -220,20 +220,11 @@ def _run_cts_test(test_category: str, test_name: str) -> CTSResult:
     # If dump files were generated, delete all irrelevant dumps and make an archive.
     # Delete the dumps directory after.
     if os.listdir(dumps_directory_path):
-        run_result = subprocess.run(
-            [
-                "find",
-                ".",
-                "-type",
-                "f",
-                "!",
-                "-name",
-                "*backend*",
-                "-delete",
-            ],
-            cwd=dumps_directory_path,
-            timeout=10 * 60,
-        )
+        all_dump_files = os.listdir(dumps_directory_path)
+        for file in all_dump_files:
+            if not "backend" in file and not ".cl" in file:
+                os.remove(os.path.join(dumps_directory_path, file))
+
         shutil.make_archive(dumps_directory_path[:-1], "gztar", dumps_directory_path)
         dumps_path = dumps_directory_path[:-1] + ".tar.gz"
         shutil.rmtree(dumps_directory_path)
